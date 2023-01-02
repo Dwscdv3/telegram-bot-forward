@@ -47,13 +47,13 @@ export default async function ForwardMiddleware(ctx: Context<Update.ChannelPostU
     }
 }
 
-export const _sendMediaGroupTimer = setInterval(() => {
+export const _sendMediaGroupTimer = setInterval(async () => {
     for (const [id, { time, ctx, chatId, messageId, destinations, media }]
         of Object.entries(pendingMediaGroups)) {
-        if (Date.now() - time > 1000) {
+        if (Date.now() - time > 5000) {
             delete pendingMediaGroups[id];
             for (const dest of destinations) {
-                enqueue(() => ctx.telegram.sendMediaGroup(dest, media as MediaGroup));
+                await enqueue(() => ctx.telegram.sendMediaGroup(dest, media as MediaGroup));
                 enqueue(() => ctx.telegram.sendMessage(dest,
                     `https://t.me/c/${-(chatId + 1e12)}/${messageId}`));
                 // Fill up the queue to prevent API request flooding
