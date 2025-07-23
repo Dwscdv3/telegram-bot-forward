@@ -1,6 +1,11 @@
-# Telegram Bot - Forward
+# Telegram Bot - Auto Forwarding and Reaction Forwarding
 
-Multi-target channel post forwarding with media group support.
+This bot has two features:
+
+- Auto forwarding all messages from a chat to other chats
+  - Configured by config.yaml (no hot reloading support)
+- Manual forwarding by giving certain reaction on messages
+  - Configured by commands
 
 ## Installation
 
@@ -9,6 +14,6 @@ git clone https://github.com/Dwscdv3/telegram-bot-forward.git
 cd telegram-bot-forward
 cp config-template.yaml config.yaml
 vim config.yaml
-npm i
+npm install
 npm start
 ```

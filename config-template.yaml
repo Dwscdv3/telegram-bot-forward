@@ -1,8 +1,11 @@
-token: 
+token: 1234567890:***********************************
+
+admins:
+  - 123456789         # Telegram UIDs
 
 forward:
-  -1000000000001:     # forward sources
-    - 1234567890      # forward destinations
+  -1000000000001:     # forward sources (any chat)
+    - 1234567890      # forward destinations (any chat)
     - -1000000000002
   -1000000000002:
     - 9876543210

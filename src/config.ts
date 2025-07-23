@@ -3,6 +3,7 @@ import { parse } from 'yaml';
 
 type Config = Readonly<{
     token: string;
+    admins: number[];
     forward: { [src: number]: number[] };
 }>;
 
