@@ -2,7 +2,7 @@ import { Composer, Context, Telegraf, TelegramError } from 'telegraf';
 import config from './config.js';
 import queue from './util/queue.js';
 import ErrorHandlerMiddleware from './middleware/error-handler.js';
-import ReactionForwardingWhitelistMiddleware from './middleware/chat-whitelist.js';
+import ReactionForwardingWhitelistMiddleware from './middleware/reaction-forwarding-whitelist.js';
 import MediaGroupIndexerMiddleware from './middleware/media-group-indexer.js';
 import AutoForwardingMiddleware, { _sendMediaGroupTimer } from './middleware/auto-forwarding.js';
 import ReactionForwardingMiddleware from './middleware/reaction-forwarding.js';
