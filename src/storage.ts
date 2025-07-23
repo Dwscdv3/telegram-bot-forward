@@ -21,7 +21,7 @@ storage.reactionAssociations ??= {}
 
 setInterval(save, 60000);
 
-export async function save() {
+async function save() {
     await writeFile(StoragePath, JSON.stringify(storage));
 }
 

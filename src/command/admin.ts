@@ -7,17 +7,17 @@ const { command, acl } = Composer;
 const adminCommands = new Composer();
 
 adminCommands.use(acl(config.admins,
-    command('enable_reaction_forwarding', ctx => {
+    command('enable_reaction_forwarding', async ctx => {
         storage.chats[ctx.chat.id] ??= {};
         storage.chats[ctx.chat.id].reactionForwardingEnabled = true;
-        ctx.reply('Enabled reaction forwarding for this chat.');
+        await ctx.reply('Enabled reaction forwarding for this chat.');
     }),
-    command('disable_reaction_forwarding', ctx => {
+    command('disable_reaction_forwarding', async ctx => {
         storage.chats[ctx.chat.id] ??= {};
         storage.chats[ctx.chat.id].reactionForwardingEnabled = false;
-        ctx.reply('Disabled reaction forwarding for this chat.');
+        await ctx.reply('Disabled reaction forwarding for this chat.');
     }),
-    command('assoc_reaction_forwarding_emoji', ctx => {
+    command('assoc_reaction_forwarding_emoji', async ctx => {
         const ValidEmojis = [
             '❤', '👍', '👎', '🔥', '🥰', '👏', '😁', '🤔', '🤯', '😱',
             '🤬', '😢', '🎉', '🤩', '🤮', '💩', '🙏', '👌', '🕊', '🤡',
@@ -38,15 +38,15 @@ adminCommands.use(acl(config.admins,
         }
         const associatedEmojis = Object.keys(storage.reactionAssociations)
             .filter(key => storage.reactionAssociations[key]?.includes(ctx.chat.id));
-        ctx.reply(`Done. This chat is currently associated with:
+        await ctx.reply(`Done. This chat is currently associated with:
 (bots without TON collectible usernames can't send custom emojis)
 ${associatedEmojis.join('\n')}`);
     }),
-    command('clear_reaction_forwarding_emoji', ctx => {
+    command('clear_reaction_forwarding_emoji', async ctx => {
         for (const chats of Object.values(storage.reactionAssociations)) {
             removeAll(chats, ctx.chat.id);
         }
-        ctx.reply('Done. This chat is no longer associated with any reaction emojis.')
+        await ctx.reply('Done. This chat is no longer associated with any reaction emojis.')
     }),
 ));
 

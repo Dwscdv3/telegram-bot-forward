@@ -17,10 +17,11 @@ export default async function ReactionForwardingMiddleware(
     const chatId = ctx.chat.id;
     const mediaGroupId = storage.chats[chatId].mediaGroupIndex?.[ctx.msgId];
     const mediaGroup = storage.chats[chatId].mediaGroups?.[mediaGroupId!];
+    mediaGroup?.sort((a, b) => a - b);
 
     for (const dest of destinations) {
         mediaGroup
-            ? enqueue(() => ctx.forwardMessages(dest, mediaGroup))
-            : enqueue(() => ctx.forwardMessage(dest));
+            ? await enqueue(() => ctx.forwardMessages(dest, mediaGroup))
+            : await enqueue(() => ctx.forwardMessage(dest));
     }
 }

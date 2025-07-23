@@ -22,7 +22,7 @@ export default async function AutoForwardingMiddleware(
         pendingMediaGroups[ctx.msg.media_group_id].msgIds.push(ctx.msgId);
     } else {
         for (const dest of destinations) {
-            enqueue(() => ctx.forwardMessage(dest));
+            await enqueue(() => ctx.forwardMessage(dest));
         }
     }
 

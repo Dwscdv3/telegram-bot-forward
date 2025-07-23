@@ -5,22 +5,23 @@ export default async function MediaGroupIndexerMiddleware(
     ctx: Context,
     next: () => Promise<void>,
 ) {
-    if (!ctx.chat?.id) return;
-    if (!ctx.msg) return;
-    if (!ctx.msgId) return;
-    if (!('media_group_id' in ctx.msg)) return;
-    if (!ctx.msg.media_group_id) return;
+    if (ctx.chat?.id &&
+        ctx.msg &&
+        ctx.msgId &&
+        'media_group_id' in ctx.msg &&
+        ctx.msg.media_group_id) {
 
-    const chatId = ctx.chat.id;
-    const mediaGroupId = ctx.msg.media_group_id;
+        const chatId = ctx.chat.id;
+        const mediaGroupId = ctx.msg.media_group_id;
 
-    storage.chats[chatId] ??= {};
-    storage.chats[chatId].mediaGroups ??= {};
-    storage.chats[chatId].mediaGroupIndex ??= {};
-    storage.chats[chatId].mediaGroups[mediaGroupId] ??= [];
+        storage.chats[chatId] ??= {};
+        storage.chats[chatId].mediaGroups ??= {};
+        storage.chats[chatId].mediaGroupIndex ??= {};
+        storage.chats[chatId].mediaGroups[mediaGroupId] ??= [];
 
-    storage.chats[chatId].mediaGroups[mediaGroupId].push(ctx.msgId);
-    storage.chats[chatId].mediaGroupIndex[ctx.msgId] = mediaGroupId;
+        storage.chats[chatId].mediaGroups[mediaGroupId].push(ctx.msgId);
+        storage.chats[chatId].mediaGroupIndex[ctx.msgId] = mediaGroupId;
+    }
 
     await next();
 }

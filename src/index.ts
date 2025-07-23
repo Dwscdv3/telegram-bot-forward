@@ -11,7 +11,7 @@ import adminCommands from './command/admin.js';
 const autoForwardingChatIds = new Set(Object.keys(config.forward).map(parseInt));
 
 const bot = new Telegraf(config.token);
-const { compose, on, branch, optional, admin } = Composer;
+const { compose, on, branch, optional } = Composer;
 
 bot.use(
     ErrorHandlerMiddleware,
@@ -22,7 +22,7 @@ bot.use(
                 AutoForwardingMiddleware),
             ReactionForwardingWhitelistMiddleware,
             MediaGroupIndexerMiddleware,
-            on('message_reaction', admin(ReactionForwardingMiddleware as any)),
+            on('message_reaction', ReactionForwardingMiddleware),
         ]),
     ),
 );
@@ -31,7 +31,9 @@ queue.doNotRetry(_doNotRetry);
 queue.catch(_catch);
 bot.catch(_catch);
 
-bot.launch();
+bot.launch({
+    allowedUpdates: ['message', 'channel_post', 'message_reaction', 'message_reaction_count'],
+});
 
 console.log('Bot is now online.');
 
@@ -47,7 +49,7 @@ function _doNotRetry(reason: any) {
 }
 function _catch(err: unknown, ctx?: Context) {
     if (err instanceof TelegramError) {
-        if (err.code == 400) {
+        if (err.code >= 400 && err.code < 500) {
             console.error(err);
             return;
         }
